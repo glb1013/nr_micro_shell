@@ -39,10 +39,13 @@ extern "C"
 {
 #endif
 
-    /* Includes ------------------------------------------------------------------*/
+/* Includes ------------------------------------------------------------------*/
+#if defined(WIN32) 
+#else
 #ifndef NR_MICRO_SHELL_SIMULATOR
 #include <rtconfig.h>
 #include <rtthread.h>
+#endif
 #endif
 
 
@@ -97,9 +100,7 @@ The end of line.
 #define shell_printf(fmt, args...) rt_kprintf(fmt, ##args)
 #define ansi_show_char(x) rt_kprintf("%c", x)
 
-#endif
-
-#ifndef PKG_USING_NR_MICRO_SHELL
+#else /* !PKG_USING_NR_MICRO_SHELL */
 /* ANSI command line buffer size. */
 #define NR_ANSI_LINE_SIZE 100
 
@@ -141,7 +142,11 @@ The end of line.
 // #define NR_SHELL_USING_EXPORT_CMD
 
 /* If you use RTOS, you may need to do some special processing for printf(). */
+#if defined(WIN32)
+#define shell_printf(fmt, ...) printf(fmt, ##__VA_ARGS__);
+#else
 #define shell_printf(fmt, args...) printf(fmt, ##args);
+#endif
 #define ansi_show_char(x) putchar(x)
 
 #endif

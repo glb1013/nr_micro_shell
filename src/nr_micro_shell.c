@@ -40,7 +40,7 @@ NR_SHELL_CMD_EXPORT_START(0,NULL);
 NR_SHELL_CMD_EXPORT_END(n,NULL);
 
 shell_st nr_shell =
-    {
+{
         .user_name = NR_SHELL_USER_NAME,
         .static_cmd = nr_cmd_start_add,
 };

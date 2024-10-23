@@ -128,15 +128,21 @@ extern "C"
     int rt_nr_shell_system_init(void);
 #endif
 
+#if defined(WIN32)
+#define NR_USED
+#define NR_SECTION(x) //__declspec(allocate(".rodata.nr_shell_cmd" x))
+
+#define ALIGN_16B				__declspec(align(16))
+#else
 #define NR_USED __attribute__((used))
 #define NR_SECTION(x) __attribute__((section(".rodata.nr_shell_cmd" x)))
+#endif
 #define NR_SHELL_CMD_EXPORT_START(cmd, func) \
     NR_USED const static_cmd_st _nr_cmd_start_ NR_SECTION("0.end") = {#cmd, NULL}
 #define NR_SHELL_CMD_EXPORT(cmd, func) \
     NR_USED const static_cmd_st _nr_cmd_##cmd NR_SECTION("1") = {#cmd, func}
 #define NR_SHELL_CMD_EXPORT_END(cmd, func) \
     NR_USED const static_cmd_st _nr_cmd_end_ NR_SECTION("1.end") = {#cmd, NULL}
-
     
 #ifdef NR_SHELL_USING_EXPORT_CMD
 	extern const static_cmd_st _nr_cmd_start_;
